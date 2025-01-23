@@ -12,7 +12,6 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    WebkitOverflowScrolling: 'touch',
     overflow: 'auto',
     width: '900px',
     maxWidth: '90vw',
@@ -23,12 +22,12 @@ const customStyles = {
     color: '#000',
     transition: 'all 0.3s',
     border: 'none',
+    WebkitOverflowScrolling: 'touch' as 'touch' | undefined, // Ensure the type is valid
   },
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.9)',
     overscrollBehavior: 'contain',
     zIndex: 20,
-    // position: 'fixed',
   },
 };
 
@@ -46,18 +45,10 @@ function CustomModal({
   [x: string]: any;
 }) {
   React.useEffect(() => {
-    // Check if modal is open and prevent body from scrolling
     if (typeof window !== 'undefined') {
       const body = document.body;
-
-      if (modalState) {
-        // Disable scroll
-        body.style.overflow = 'hidden';
-        body.style.height = '100vh';
-      } else {
-        body.style.overflowY = 'auto';
-        body.style.height = 'auto';
-      }
+      body.style.overflow = modalState ? 'hidden' : 'auto';
+      body.style.height = modalState ? '100vh' : 'auto';
     }
   }, [modalState]);
 
@@ -66,7 +57,6 @@ function CustomModal({
       isOpen={modalState}
       onRequestClose={closeModal}
       style={{
-        // @ts-ignore
         content: {
           ...customStyles.content,
           opacity: modalState ? 1 : 0,
@@ -94,3 +84,4 @@ function CustomModal({
 }
 
 export default CustomModal;
+

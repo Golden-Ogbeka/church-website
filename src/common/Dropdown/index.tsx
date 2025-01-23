@@ -1,4 +1,5 @@
-import Select from 'react-select';
+import React from 'react';
+import Select, { StylesConfig } from 'react-select';
 
 function Dropdown({
   containerStyle = {},
@@ -31,6 +32,25 @@ function Dropdown({
   labelClass?: string;
   [x: string]: any;
 }) {
+  // Define styles with correct types
+  const customStyles: StylesConfig = {
+    container: (provided, state) => ({
+      ...provided,
+      width: '100%',
+      color: '#000',
+      ...containerStyle,
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      paddingBlock: 8,
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: '#CFCFCF',
+      fontStyle: 'italic',
+    }),
+  };
+
   return (
     <div className={'w-full flex flex-col gap-[5px] ' + className}>
       {useFormik ? (
@@ -60,23 +80,7 @@ function Dropdown({
               formik.setFieldTouched(name, true);
             }}
             id={name}
-            styles={{
-              container: (provided, state) => ({
-                ...provided,
-                width: '100%',
-                color: '#000',
-                ...containerStyle,
-              }),
-              control: (provided, state) => ({
-                ...provided,
-                paddingBlock: 8,
-              }),
-              placeholder: (provided) => ({
-                ...provided,
-                color: '#CFCFCF',
-                fontStyle: 'italic',
-              }),
-            }}
+            styles={customStyles} // Use the defined styles here
             isClearable
             placeholder={placeholder}
             escapeClearsValue
@@ -105,22 +109,7 @@ function Dropdown({
             }))}
             onChange={onChange}
             id={name}
-            styles={{
-              container: (provided, state) => ({
-                ...provided,
-                width: '100%',
-                color: '#000',
-                ...containerStyle,
-              }),
-              control: (provided, state) => ({
-                ...provided,
-                paddingBlock: 8,
-              }),
-              placeholder: (provided) => ({
-                ...provided,
-                color: '#999',
-              }),
-            }}
+            styles={customStyles} // Use the defined styles here
             isClearable
             placeholder={placeholder}
             escapeClearsValue
@@ -137,3 +126,4 @@ function Dropdown({
 }
 
 export default Dropdown;
+

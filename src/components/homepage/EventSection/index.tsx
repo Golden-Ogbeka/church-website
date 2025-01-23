@@ -9,7 +9,7 @@ import { useDraggable } from 'react-use-draggable-scroll';
 const EventSection = () => {
   const [data, setData] = useState<EventType[]>([]);
   const [loading, setLoading] = useState(true);
-  const ref = React.useRef<any>();
+  const ref = React.useRef<any>(null);
   const { events } = useDraggable(ref);
 
   useEffect(() => {

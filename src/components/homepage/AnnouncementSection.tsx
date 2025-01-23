@@ -10,7 +10,7 @@ import { useDraggable } from 'react-use-draggable-scroll';
 const AnnouncementSection = () => {
   const [data, setData] = useState<AnnouncementType[]>([]);
   const [loading, setLoading] = useState(true);
-  const ref = React.useRef<any>();
+  const ref = React.useRef<any>(null);
   const { events } = useDraggable(ref);
   const router = useRouter();
 

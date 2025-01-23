@@ -10,7 +10,7 @@ import Button from '@/common/Button';
 
 const WorshipExperienceSection = ({ showButton = false }: { showButton?: boolean }) => {
   const { videos, loading } = useAppSelector((state) => state.youtubeVideos);
-  const ref = React.useRef<any>();
+  const ref = React.useRef<any>(null);
   const { events } = useDraggable(ref);
 
   return (
