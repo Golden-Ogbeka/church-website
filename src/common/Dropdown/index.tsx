@@ -1,4 +1,15 @@
-import Select from 'react-select';
+// import Select from 'react-select';
+import Select, { StylesConfig } from 'react-select';
+import { CSSObject } from '@emotion/serialize';
+
+
+type Provided = CSSObject;
+
+type State = {
+  isDisabled: boolean;
+  isFocused: boolean;
+  isSelected: boolean;
+};
 
 function Dropdown({
   containerStyle = {},
@@ -61,17 +72,17 @@ function Dropdown({
             }}
             id={name}
             styles={{
-              container: (provided, state) => ({
+              container: (provided: Provided, state: State) => ({
                 ...provided,
                 width: '100%',
                 color: '#000',
                 ...containerStyle,
               }),
-              control: (provided, state) => ({
+              control: (provided: Provided, state: State) => ({
                 ...provided,
                 paddingBlock: 8,
               }),
-              placeholder: (provided) => ({
+              placeholder: (provided: Provided) => ({
                 ...provided,
                 color: '#CFCFCF',
                 fontStyle: 'italic',
@@ -106,17 +117,17 @@ function Dropdown({
             onChange={onChange}
             id={name}
             styles={{
-              container: (provided, state) => ({
+              container: (provided: Provided, state: State) => ({
                 ...provided,
                 width: '100%',
                 color: '#000',
                 ...containerStyle,
               }),
-              control: (provided, state) => ({
+              control: (provided: Provided, state: State) => ({
                 ...provided,
                 paddingBlock: 8,
               }),
-              placeholder: (provided) => ({
+              placeholder: (provided: Provided) => ({
                 ...provided,
                 color: '#999',
               }),
