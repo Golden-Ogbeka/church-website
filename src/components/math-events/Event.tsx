@@ -25,24 +25,26 @@ function Events() {
          {/* ======================= && •EVENTS HEADER• && ====================== */}
         <div className="mb-8 mt-5">
           
-          <div className="flex justify-between">
+          <div className="flex justify-between sm:flex-row flex-col">
             <h2 className="text-lg sm:text-[40px] font-bold text-[#002F72]">
-              The Unlimited Man Conference
-            </h2>
+              The Unlimited Man Conference <br />
+
+              <p className="text-gray-900 text-sm sm:text-2xl mt-2 font-normal">
+                Sunday, 19th June, 2022 | 10am
+              </p>
+            </h2><br/>
 
             
             <Link
               href="/registration"
-              className="bg-red-600 text-white flex justify-center items-center text-center w-[291px] h-[57px] rounded-md"
+              className="bg-red-600 text-white flex justify-center items-center text-center w-[240px] sm:w-[291px] h-[40px] sm:h-[57px] rounded-md sm:rounded-lg text-sm sm:text-base "
             >
               This event requires registration
             </Link>
             
           </div>
 
-          <p className="text-gray-900 text-sm sm:text-2xl mt-2">
-            Sunday, 19th June, 2022 | 10am
-          </p>
+          
         </div>
 
         {/* ======================= && •EVENTS DETAILS• && ====================== */}
@@ -56,7 +58,7 @@ function Events() {
         </div>
      
         {/* ======================= && •EVENTS FORM• && ====================== */}
-        <EventForm />
+        
 
         
     </section>

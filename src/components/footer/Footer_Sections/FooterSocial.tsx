@@ -6,7 +6,7 @@ import YoutubeIcon from "@/assets/svgs/social/youtube.svg";
 
 const FooterSocial: React.FC = () => {
   return (
-    <div className="flex gap-6 mt-6 sm:justify-center justify-start">
+    <div className="flex gap-6 sm:mt-6 mt-2 sm:justify-center justify-start sm:ml-0 ml-6">
       {/* ============== SOCIAL ICONS ============== */}
       <a href="#" className="hover:text-gray-400 transition-colors">
         <Image src={FacebookIcon} alt="Facebook" width={24} height={24} />

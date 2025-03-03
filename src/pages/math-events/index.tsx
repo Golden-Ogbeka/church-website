@@ -6,6 +6,7 @@ import Event from '../../components/math-events/Event';
 import SubscribeSection from '../../common/Subscribe/Newsletter';
 import Layout from '@/components/layout/Layout';
 import WorshipWithUs from '../../components/math-events/Worship';
+import EventForm from '@/components/math-events/EventForm';
 // import Footer from '../../common/Footer';
 
 
@@ -16,6 +17,7 @@ function Events() {
             <PopupModal />
             <HeroSection />
             <Event />
+            <EventForm />
             {/* <EventForm /> */}
             {/* <ImageWithText /> */}
             <WorshipWithUs />
