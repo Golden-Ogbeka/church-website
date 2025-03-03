@@ -57,7 +57,21 @@ const Footer: React.FC = () => {
           links={[{name:"Join Online", url: "#"}, {name:"Sermons", url: "#"}, {name:"Our Gallery", url: "#"}
 
           ]} />
-        <FooterContact />
+
+        <div>
+
+          <FooterContact />
+          
+          {/* ============== LOGIN & SIGNUP BUTTONS ============== */}
+          <div className="mt-6 flex gap-3">
+            <a href="#" className="w-[110px] h-[35px] flex items-center justify-center bg-[#FF6634] text-white rounded-md hover:bg-opacity-90 transition-colors">
+              Log in
+            </a>
+            <a href="#" className="w-[110px] h-[35px] flex items-center justify-center bg-[#FF6634] text-white rounded-md hover:bg-opacity-90 transition-colors">
+              Sign up
+            </a>
+          </div>
+          </div>
       </div>
 
       <FooterSocial />
