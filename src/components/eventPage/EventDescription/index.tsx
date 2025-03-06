@@ -1,134 +1,53 @@
-import { appAxios } from '@/api/axios';
-import LoadingIndicator from '@/common/LoadingIndicator/LoadingIndicator';
-import { sendCatchFeedback } from '@/functions/feedback';
-import { EventType } from '@/types/types';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
 import RegistrationForm from './RegistrationForm';
-import Gallery from './Gallery';
+import Image from 'next/image';
+import EventBanner from '../../../assets/backgrounds/event_banner.png'
+import details from '@/pages/events/details';
+import Registration from './RegistrationForm';
 
 const EventDescription = () => {
-  const [details, setDetails] = useState<EventType | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const { id } = router.query;
-
-  const getData = async () => {
-    try {
-      setLoading(true);
-      const response = await appAxios.get(`/event/${id}`);
-      setDetails(response.data.event);
-    } catch (error: any) {
-      sendCatchFeedback(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  React.useEffect(() => {
-    if (id) {
-      getData();
-    }
-  }, [id]);
-
-  const shouldAllowRegistration = () => {
-    let allow = true;
-
-    if (
-      details?.limitedNumberRegistration &&
-      details?.registrationEntries.length >= details?.registrationNumberLimit
-    ) {
-      // if the number has exceeded
-      allow = false;
-    } else if (
-      details?.limitedDateRegistration &&
-      new Date() > new Date(details?.date || '')
-    ) {
-      // If the date has passed
-      allow = false;
-    } else {
-      allow = true;
-    }
-    return allow;
-  };
-
-  const generateCalendarLink = () => {
-    const nameString = details?.name.replace(/ /g, '+'); //replacing all spaces with plus
-    const dateString = new Date(details?.date || '')
-      .toISOString()
-      .split('T')[0]
-      .split('-')
-      .join(''); //did this to get the format: YYYYMMDD
-    const link = `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${dateString}%2F${dateString}&location=&text=${nameString}`;
-    return link;
-  };
-
-  const checkIfDateIsPassed = () => {
-    const currentDate = new Date();
-    return currentDate > new Date(details?.date || '');
-  };
-
-  if (!details) return null;
-
   return (
-    <div className='py-[98px] px-primary w-full'>
-      {loading && (
-        <div className='py-5'>
-          <LoadingIndicator />
+    <section className="bg-[#ffede7] py-8">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-center">
+          <Image 
+            src={EventBanner} 
+            alt="Event_Banner" 
+            width={1221} 
+            height={658} 
+            className="mx-auto"
+            loading='lazy' 
+          />
         </div>
-      )}
-      <Image
-        src={details.poster}
-        alt='Event'
-        width={1000}
-        height={1000}
-        className='h-[658px] w-full object-cover rounded-[20px]'
-      />
-      <div className='flex w-full justify-between items-start flex-wrap gap-5 mt-[42px]'>
-        <div className='flex flex-col gap-[19px]'>
-          <h1 className='text-primary font-secondary text-[30px] md:text-[40px] font-bold'>
-            {details.name}
-          </h1>
-          <p className='text-xl md:text-2xl'>{new Date(details.date).toDateString()}</p>
-        </div>
-        <div>
-          {checkIfDateIsPassed() ? (
-            <div className='text-[#F13637] py-[13px] px-[30px] bg-[#FFE0E0] rounded-lg text-lg'>
-              This event has passed.
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-start mt-8">
+          <div className="mb-4 md:mb-0 text-center md:text-left">
+            <h2 className="text-[#002f72] text-4xl font-bold">
+              The Unlimited Man Conference
+            </h2>
+            <p className="font-medium text-2xl mt-2">
+              Sunday, 19th June, 2022 | 10am
+            </p>
+          </div>
+          <div>
+            <div className="bg-[#E10000] hover:bg-[#E10000] p-5 text-white">
+              <p className="font-medium text-base">
+                This event require registration
+              </p>
             </div>
-          ) : (
-            details.allowRegistration && (
-              <div className='text-white py-[13px] px-[30px] bg-[#E10000] rounded-lg text-lg'>
-                This event requires registration
-              </div>
-            )
-          )}
+          </div>
+        </div>
+        <br />
+        <div className="font-normal text-base md:text-2xl text-[#00040B]">
+          <p>
+            Lorem ipsum dolor sit amet consectetur. Id lectus est integer nam faucibus dictum et sapien tellus. Nam feugiat nam ut auctor a. Velit mus nisl commodo mi tortor. Eget nunc neque urna adipiscing. Ut mattis senectus egestas a. Vitae orci aliquet sed amet amet. Feugiat ullamcorper aliquam adipiscing adipiscing porttitor nisl netus et libero. Purus rutrum interdum curabitur odio et aliquam amet ornare. Tortor malesuada risus nisl odio molestie.
+          </p>
+          <br />
+          <p>
+            Eleifend tempus interdum mauris suspendisse. Nec ornare mauris volutpat ornare malesuada. Tortor aliquet pellentesque cursus facilisi mi erat vitae. Id gravida egestas commodo ac. Tempus faucibus leo at luctus malesuada eget. Lectus nunc quis diam viverra maecenas nisi. Quis arcu at massa malesuada duis imperdiet. Egestas morbi nibh orci pellentesque in. Sem morbi ut accumsan turpis consectetur quis elit sed. Ut elementum accumsan quam in. Pellentesque amet tortor diam sollicitudin. Sagittis blandit et ut tincidunt purus.
+          </p>
         </div>
       </div>
-
-      <p
-        className='text-xl md:text-2xl mt-6 font-normal'
-        dangerouslySetInnerHTML={{
-          __html: details.description,
-        }}
-      />
-
-      {details.allowRegistration &&
-        shouldAllowRegistration() &&
-        !checkIfDateIsPassed() && (
-          <>
-            <RegistrationForm event={details} />
-          </>
-        )}
-
-      {/* Event Gallery */}
-      {checkIfDateIsPassed() && (
-        <>
-          <Gallery gallery={details.gallery} />
-        </>
-      )}
-    </div>
+      <Registration />
+    </section>
   );
 };
 

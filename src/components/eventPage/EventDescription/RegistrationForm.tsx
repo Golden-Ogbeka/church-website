@@ -1,132 +1,169 @@
-import { appAxios } from '@/api/axios';
-import Button from '@/common/Button';
+import React from 'react';
+import Button  from '@/common/Button';
 import Dropdown from '@/common/Dropdown';
 import LabelInput from '@/common/LabelInput/LabelInput';
-import { sendCatchFeedback, sendFeedback } from '@/functions/feedback';
-import { capitalize } from '@/functions/stringManipulations';
-import { EventType } from '@/types/types';
 import { useFormik } from 'formik';
-import React from 'react';
 import * as yup from 'yup';
 
-const RegistrationForm = ({ event }: { event: EventType }) => {
-  interface inputType {
-    name: string;
-    type: string | 'text' | 'number' | 'dropdown' | 'email' | 'tel' | 'date' | 'url';
-  }
 
-  const formik = useFormik<any>({
+const Registration = () => {
+  const formik = useFormik({
     initialValues: {
-      ...event.requiredRegistrationDetails.reduce(
-        (initial, field: inputType) => ({
-          ...initial,
-          [field.name]: field.type !== 'number' ? '' : 0,
-        }),
-        {}
-      ),
+      fullName: '',
+      phoneNumber: '',
+      houseAddress: '',
+      landmark: '',
+      sex: '',
+      maritalStatus: '',
+      occupation: '',
+      dateOfBirth: '',
+      hearAboutUs: '',
       loading: false,
     },
-    onSubmit: () => {
-      submitValues();
+    onSubmit: (values) => {
+      console.log('Form Submitted:', values);
+      formik.resetForm();
     },
-    validationSchema: yup.object(
-      event.requiredRegistrationDetails.reduce(
-        (initial, field: inputType) => ({
-          ...initial,
-          [field.name]:
-            field.type !== 'number'
-              ? yup.string().required('Required')
-              : yup.number().required('Required').typeError('Must be a number'),
-        }),
-        {}
-      )
-    ),
+    validationSchema: yup.object({
+      fullName: yup.string().required('Required'),
+      phoneNumber: yup.string().required('Required'),
+      houseAddress: yup.string().required('Required'),
+      landmark: yup.string().required('Required'),
+      sex: yup.string().required('Required'),
+      maritalStatus: yup.string().required('Required'),
+      occupation: yup.string().required('Required'),
+      dateOfBirth: yup.date().required('Required'),
+      hearAboutUs: yup.string().required('Required'),
+    }),
   });
 
-  const submitValues = async () => {
-    formik.setFieldValue('loading', true);
+  const sexOptions = [
+    { label: 'Male', value: 'Male' },
+    { label: 'Female', value: 'Female' },
+  ];
 
-    try {
-      const response = await appAxios.post(`/event/${event.id}/register`, {
-        ...event.requiredRegistrationDetails.reduce(
-          (initial, field: inputType) => ({
-            ...initial,
-            [field.name]: formik.values[field.name],
-          }),
-          {}
-        ),
-      });
-
-      sendFeedback(response.data?.message, 'success');
-
-      formik.resetForm();
-    } catch (error) {
-      sendCatchFeedback(error);
-    }
-
-    formik.setFieldValue('loading', false);
-  };
+  const hearAboutOptions = [
+    { label: 'Social Media', value: 'socialMedia' },
+    { label: 'Friend / Family Referral', value: 'friendReferral' },
+    { label: 'Search Engine', value: 'searchEngine' },
+    { label: 'Advertisement', value: 'advertisement' },
+    { label: 'Other', value: 'other' },
+  ];
 
   return (
-    <div className='w-full mt-[92px] flex flex-col'>
-      <h2 className='text-primary font-bold font-secondary text-center mb-[52px] text-[30px] md:text-[40px]'>
+    <section className="mt-20 px-4">
+      <h2
+        className={`text-[#002F72] text-2xl font-bold text-center mb-8`}
+      >
         Register for the event
       </h2>
-      <form className='flex flex-col w-full items-center' onSubmit={formik.handleSubmit}>
-        <div className='flex w-full flex-col gap-[29px]'>
-          {event.requiredRegistrationDetails.map((detail) => {
-            if (detail.type === 'dropdown') {
-              return (
-                <Dropdown
-                  useFormik={false}
-                  values={
-                    (detail.options &&
-                      detail.options.split(',').map((item) => ({
-                        label: item,
-                        value: item,
-                      }))) ||
-                    []
-                  }
-                  label='Change Image'
-                  name='changeImage'
-                  formik={formik}
-                  className='mb-5'
-                  value={formik.values[detail.name]}
-                  placeholder={capitalize(detail.name.split('_').join(' '))}
-                  error={formik.errors[detail.name] as any}
-                  showError={
-                    formik.touched[detail.name] && formik.errors[detail.name]
-                      ? true
-                      : false
-                  }
-                  onChange={() => {
-                    formik.setFieldTouched(detail.name, true);
-                  }}
-                />
-              );
-            } else {
-              return (
-                <LabelInput
-                  formik={formik}
-                  key={detail.name}
-                  name={detail.name}
-                  placeholder={capitalize(detail.name.split('_').join(' '))}
-                  type={detail.type === 'date' ? 'date' : 'text'}
-                />
-              );
-            }
-          })}
-        </div>
+      <form
+        className="flex flex-col items-center gap-4"
+        onSubmit={formik.handleSubmit}
+      >
+        <LabelInput
+          name="fullName"
+          placeholder="Full Name"
+          type="text"
+          formik={formik}
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] placeholder:text-[#002F72] placeholder:font-normal text-[#002F72] font-normal sm:text-2xl rounded outline-none"
+        />
+        <LabelInput
+          name="phoneNumber"
+          placeholder="Phone Number"
+          type="tel"
+          formik={formik}
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] placeholder:text-[#002F72] placeholder:font-normal text-[#002F72] font-normal sm:text-2xl rounded outline-none"
+        />
+        <LabelInput
+          name="houseAddress"
+          placeholder="House Address"
+          type="text"
+          formik={formik}
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] placeholder:text-[#002F72] placeholder:font-normal text-[#002F72] font-normal sm:text-2xl rounded outline-none"
+        />
+        <LabelInput
+          name="landmark"
+          placeholder="Landmark"
+          type="text"
+          formik={formik}
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] placeholder:text-[#002F72] placeholder:font-normal text-[#002F72] font-normal sm:text-2xl rounded outline-none"
+        />
+        <Dropdown
+          name="sex"
+          label=""
+          formik={formik}
+          placeholder="Sex"
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] text-[#002F72] font-normal rounded outline-none"
+          values={sexOptions}
+          value={formik.values.sex}
+          error={formik.errors.sex}
+          showError={formik.touched.sex && Boolean(formik.errors.sex)}
+          onChange={(value: string) => {
+            formik.setFieldValue('sex', value);
+            formik.setFieldTouched('sex', true);
+          }}
+        />
+        <LabelInput
+          name="maritalStatus"
+          placeholder="Marital Status"
+          type="text"
+          formik={formik}
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] placeholder:text-[#002F72] placeholder:font-normal text-[#002F72] font-normal sm:text-2xl rounded outline-none"
+        />
+        <LabelInput
+          name="occupation"
+          placeholder="Occupation"
+          type="text"
+          formik={formik}
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] placeholder:text-[#002F72] placeholder:font-normal text-[#002F72] font-normal sm:text-2xl rounded outline-none"
+        />
+        <LabelInput
+          name="dateOfBirth"
+          placeholder="Date of Birth"
+          type="date"
+          formik={formik}
+          className="w-full max-w-[500px] h-12 bg-white border border-[#0D57BE] placeholder:text-[#002F72] placeholder:font-normal text-[#002F72] font-normal sm:text-2xl rounded outline-none"
+        />
+        <Dropdown
+          name="hearAboutUs"
+          label=""
+          formik={formik}
+          placeholder="How did you hear about us?"
+          className="w-full max-w-[500px] border border-[#0D57BE] text-[#002F72] font-normal rounded outline-none"
+          values={hearAboutOptions}
+          value={formik.values.hearAboutUs}
+          error={formik.errors.hearAboutUs}
+          showError={
+            formik.touched.hearAboutUs && Boolean(formik.errors.hearAboutUs)
+          }
+          onChange={(value: string) => {
+            formik.setFieldValue('hearAboutUs', value);
+            formik.setFieldTouched('hearAboutUs', true);
+          }}
+        />
         <Button
-          type='submit'
-          className='!w-[313px] !max-w-full mt-10'
+          type="submit"
+          className={`bg-[#FF6634] w-[313px] max-w-[500px] h-[60px] mt-4 rounded p-6 hover:bg-[#FF6634] text-base font-bold`}
           loading={formik.values.loading}
         >
           Submit
         </Button>
       </form>
-    </div>
+      <div className="mt-20 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <Button
+          aria-label="Previous Event"
+        >
+          Previous Event
+        </Button>
+        <Button
+          aria-label="Next Event"
+        >
+          Next Event
+        </Button>
+      </div>
+    </section>
   );
 };
 
-export default RegistrationForm;
+export default Registration;
